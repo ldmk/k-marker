@@ -15,16 +15,17 @@ function [pred_logk] = apply_kmarker(dat1, dat2, dat3)
 %
 % Please cite the following paper when you use this code and the k-marker:
 % Leonie Koban, Sangil Lee, Daniela S Schelski, Marie-Christine Simon, 
-% Caryn Lerman, Bernd Weber, Joseph W Kable, & Hilke Plassmann. 
+% Caryn Lerman, Bernd Weber, Joseph W Kable, & Hilke Plassmann (2023). 
 % An fMRI-based brain marker of individual differences in delay discounting. 
-%
+% Journal of Neuroscience, 43(9), 1600-1613.
+
 
 wmap1_filepath = which('wmap1_kmarker_choice.img');
 wmap2_filepath = which('wmap2_kmarker_LLamount.img');
 wmap3_filepath = which('wmap3_kmarker_delay.img');
 
 if (isempty(wmap1_filepath) || isempty(wmap2_filepath) || isempty(wmap3_filepath))
-    error(' k-marker weight maps not found ')
+    error('ERROR: k-marker weight maps not found ')
 end
 
 dat1 = rescale(dat1, 'zscoreimages');
@@ -32,8 +33,8 @@ dat2 = rescale(dat2, 'zscoreimages');
 dat3 = rescale(dat3, 'zscoreimages');
 
 pexp1 = apply_mask(dat1, wmap1_filepath, 'pattern_expression', 'ignore_missing'); 
-pexp2 = apply_mask(dat2, wmap1_filepath, 'pattern_expression', 'ignore_missing'); 
-pexp3 = apply_mask(dat3, wmap1_filepath, 'pattern_expression', 'ignore_missing'); 
+pexp2 = apply_mask(dat2, wmap2_filepath, 'pattern_expression', 'ignore_missing'); 
+pexp3 = apply_mask(dat3, wmap3_filepath, 'pattern_expression', 'ignore_missing'); 
 
 pred_logk = pexp1 + pexp2 + pexp3 + -5.9164; % adds all pattern response together, plus intercept 
 
